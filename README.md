@@ -1,4 +1,4 @@
-# clickhouse-setup
+# clickhouse-replication-setup
 
 #### 1. Prerequisites
 
