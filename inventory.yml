@@ -1,0 +1,28 @@
+all:
+  hosts:
+    nms-01:
+      ansible_host: 10.98.15.5
+      IP: 10.98.15.5
+      priority: 120
+      clickhouse:
+        server_id: 1
+        replica: 1
+    nms-02:
+      ansible_host: 10.98.15.6
+      IP: 10.98.15.6
+      priority: 110
+      clickhouse:
+        server_id: 2
+        replica: 2
+    nms-03:
+      ansible_host: 10.98.15.7
+      IP: 10.98.15.7
+      priority: 100
+      clickhouse:
+        server_id: 3
+        replica: 3
+  vars:
+    ansible_ssh_user: "juniper"
+    ansible_ssh_port: 22
+    admin_user: "juniper"
+    admin_password: "juniper@123"

@@ -1,0 +1,71 @@
+---
+- name: Database Setup
+  hosts: all 
+  become: yes
+  become_user: root
+  tasks:
+  - name: Setup ClickHouse Repository
+    shell: |
+      sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+      curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor --yes -o /usr/share/keyrings/clickhouse-keyring.gpg
+
+      ARCH=$(dpkg --print-architecture)
+      echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
+      sudo apt-get update
+
+  - name: Install ClickHouse Database
+    apt:
+      name:
+        - clickhouse-server
+        - clickhouse-client
+      state: latest
+  
+  - name: Start ClickHouse Server
+    shell: |
+      sudo service clickhouse-server start
+
+  - name: Create and Modify ClickHouse Network and Logging Configuration file  
+    ansible.builtin.template:
+      src: clickhouse-config-templates/network-and-logging.xml.j2
+      dest: /etc/clickhouse-server/config.d/network-and-logging.xml
+
+  - name: Create and Modify ClickHouse Enable Keeper Configuration file  
+    ansible.builtin.template:
+      src: clickhouse-config-templates/enable-keeper.xml.j2
+      dest: /etc/clickhouse-server/config.d/enable-keeper.xml
+
+  - name: Create and Modify ClickHouse Macros Configuration file  
+    ansible.builtin.template:
+      src: clickhouse-config-templates/macros.xml.j2
+      dest: /etc/clickhouse-server/config.d/macros.xml
+
+  - name: Create and Modify ClickHouse Remote Servers Configuration file  
+    ansible.builtin.template:
+      src: clickhouse-config-templates/remote-servers.xml.j2
+      dest: /etc/clickhouse-server/config.d/remote-servers.xml
+
+  - name: Create and Modify ClickHouse Use Keeper Configuration file  
+    ansible.builtin.template:
+      src: clickhouse-config-templates/use-keeper.xml.j2
+      dest: /etc/clickhouse-server/config.d/use-keeper.xml
+
+  - name: Restart ClickHouse Server Service
+    shell: |
+      sudo service clickhouse-server restart
+
+  # - name: Uninstall ClickHouse Database
+  #   shell: |
+  #     sudo service clickhouse-server stop
+  #     sudo service clickhouse-keeper stop
+
+  #     sudo apt-get -y remove clickhouse*
+
+  #     sudo rm -rf \
+  #       /usr/bin/clickhouse* \
+  #       /etc/clickhouse* \
+  #       /var/log/clickhouse* \
+  #       /var/lib/clickhouse* \
+  #       /var/run/clickhouse* \
+  #       /etc/security/limits.d/clickhouse.conf
+        
+  #     sudo systemctl daemon-reload
