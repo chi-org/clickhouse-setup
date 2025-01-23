@@ -24,30 +24,16 @@
     shell: |
       sudo service clickhouse-server start
 
-  - name: Create and Modify ClickHouse Network and Logging Configuration file  
-    ansible.builtin.template:
-      src: clickhouse-config-templates/network-and-logging.xml.j2
-      dest: /etc/clickhouse-server/config.d/network-and-logging.xml
-
-  - name: Create and Modify ClickHouse Enable Keeper Configuration file  
-    ansible.builtin.template:
-      src: clickhouse-config-templates/enable-keeper.xml.j2
-      dest: /etc/clickhouse-server/config.d/enable-keeper.xml
-
-  - name: Create and Modify ClickHouse Macros Configuration file  
-    ansible.builtin.template:
-      src: clickhouse-config-templates/macros.xml.j2
-      dest: /etc/clickhouse-server/config.d/macros.xml
-
-  - name: Create and Modify ClickHouse Remote Servers Configuration file  
-    ansible.builtin.template:
-      src: clickhouse-config-templates/remote-servers.xml.j2
-      dest: /etc/clickhouse-server/config.d/remote-servers.xml
-
-  - name: Create and Modify ClickHouse Use Keeper Configuration file  
-    ansible.builtin.template:
-      src: clickhouse-config-templates/use-keeper.xml.j2
-      dest: /etc/clickhouse-server/config.d/use-keeper.xml
+  - name: Create and Modify Configuration Files  
+    template:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+    with_items:
+      - { src: "clickhouse-config-templates/network-and-logging.xml.j2", dest: "/etc/clickhouse-server/config.d/network-and-logging.xml" }
+      - { src: "clickhouse-config-templates/enable-keeper.xml.j2", dest: "/etc/clickhouse-server/config.d/enable-keeper.xml" }
+      - { src: "clickhouse-config-templates/macros.xml.j2", dest: "/etc/clickhouse-server/config.d/macros.xml" }
+      - { src: "clickhouse-config-templates/remote-servers.xml.j2", dest: "/etc/clickhouse-server/config.d/remote-servers.xml" }
+      - { src: "clickhouse-config-templates/use-keeper.xml.j2", dest: "/etc/clickhouse-server/config.d/use-keeper.xml" }
 
   - name: Restart ClickHouse Server Service
     shell: |
