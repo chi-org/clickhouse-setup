@@ -24,5 +24,5 @@ Clone this repo and run this script on Ansible host:
    ansible-playbook clickhouse_replication_setup.yml -i inventory.yml -k -K
    ```
 
-   
 
+4. Additional: Uncomment `Uninstall ClickHouse Database` task and comment other tasks to remove ClickHouse.
