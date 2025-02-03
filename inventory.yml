@@ -19,6 +19,6 @@ all:
     ansible_ssh_user: "juniper"
     ansible_ssh_port: 22
     clickhouse_user: "juniper"
-    # Generate password by following command:
+    # Generate password by the following command:
     # echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
     clickhouse_password: "361f7391c6ec58d2de5834643ba696c8b2fdb246" 
