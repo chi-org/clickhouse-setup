@@ -4,25 +4,25 @@
   become: yes
   become_user: root
   tasks:
-  - name: Setup ClickHouse Repository
-    shell: |
-      sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
-      curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor --yes -o /usr/share/keyrings/clickhouse-keyring.gpg
+  # - name: Setup ClickHouse Repository
+  #   shell: |
+  #     sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+  #     curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor --yes -o /usr/share/keyrings/clickhouse-keyring.gpg
 
-      ARCH=$(dpkg --print-architecture)
-      echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
-      sudo apt-get update
+  #     ARCH=$(dpkg --print-architecture)
+  #     echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
+  #     sudo apt-get update
 
-  - name: Install ClickHouse Database
-    apt:
-      name:
-        - clickhouse-server
-        - clickhouse-client
-      state: latest
+  # - name: Install ClickHouse Database
+  #   apt:
+  #     name:
+  #       - clickhouse-server
+  #       - clickhouse-client
+  #     state: latest
   
-  - name: Start ClickHouse Server
-    shell: |
-      sudo service clickhouse-server start
+  # - name: Start ClickHouse Server
+  #   shell: |
+  #     sudo service clickhouse-server start
 
   - name: Create and Modify Configuration Files  
     template:
@@ -34,10 +34,12 @@
       - { src: "clickhouse-config-templates/macros.xml.j2", dest: "/etc/clickhouse-server/config.d/macros.xml" }
       - { src: "clickhouse-config-templates/remote-servers.xml.j2", dest: "/etc/clickhouse-server/config.d/remote-servers.xml" }
       - { src: "clickhouse-config-templates/use-keeper.xml.j2", dest: "/etc/clickhouse-server/config.d/use-keeper.xml" }
+      - { src: "clickhouse-config-templates/access-management.xml.j2", dest: "/etc/clickhouse-server/users.d/access-management.xml" }
+      - { src: "clickhouse-config-templates/users.xml.j2", dest: "/etc/clickhouse-server/users.xml" }
 
-  - name: Restart ClickHouse Server Service
-    shell: |
-      sudo service clickhouse-server restart
+  # - name: Restart ClickHouse Server Service
+  #   shell: |
+  #     sudo service clickhouse-server restart
 
   # - name: Uninstall ClickHouse Database
   #   shell: |
