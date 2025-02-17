@@ -26,3 +26,17 @@ Clone this repo and run this script on Ansible host:
 
 
 4. Additional: Uncomment `Uninstall ClickHouse Database` task and comment other tasks to remove ClickHouse.
+
+
+
+#### 3. MariaDB to ClickHouse data migration
+
+- python is required
+- user with permission in mariadb and clickhouse db is required
+
+```bash
+pip install clickhouse-mysql
+
+clickhouse-mysql --src-server-id 1 --migrate-table --src-wait --nice-pause 1 --src-host=<maria-host> --src-port <maria-port> --src-user=<maria-user> --src-password=<maria-pw> --src-schemas <maria-db> --src-tables <maria-table(s)> --dst-host=<ch-host> --dst-user=<ch-user> --dst-password=<ch-pw> --with-create-database --dst-create-table --log-level=info
+```
+
