@@ -32,7 +32,8 @@ Clone this repo and run this script on Ansible host:
 #### 3. MariaDB to ClickHouse data migration
 
 - python is required
-- user with permission in mariadb and clickhouse db is required
+- user with permission in mariadb is required
+- user with permission in clickhouse db is required
 
 ```bash
 pip install clickhouse-mysql
