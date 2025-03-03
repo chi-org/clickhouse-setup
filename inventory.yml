@@ -4,16 +4,19 @@ all:
       ansible_host: 10.98.15.5
       clickhouse:
         server_id: 1
+        shard: 1
         replica: 1
     nms-02:
       ansible_host: 10.98.15.6
       clickhouse:
         server_id: 2
+        shard: 1
         replica: 2
     nms-03:
       ansible_host: 10.98.15.7
       clickhouse:
         server_id: 3
+        shard: 1
         replica: 3
   vars:
     ansible_ssh_user: "juniper"

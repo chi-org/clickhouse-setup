@@ -27,6 +27,10 @@ Clone this repo and run this script on Ansible host:
 
 4. Additional: Uncomment `Uninstall ClickHouse Database` task and comment other tasks to remove ClickHouse.
 
+5. Change to sharding:
+- Modify `shard` in `inventory.yml`
+- Modify `remote-servers.xml.j2`
+
 
 
 #### 3. MariaDB to ClickHouse data migration
