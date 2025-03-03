@@ -1,9 +1,9 @@
-# clickhouse-replication-setup
+# clickhouse-setup
 
 #### 1. Prerequisites
 
 - 1 Ansible host
-- 3 Clickhouse replica hosts
+- 3 Clickhouse hosts
 
 
 
@@ -16,20 +16,22 @@ Clone this repo and run this script on Ansible host:
    ansible-galaxy collection install -r requirements.yml --upgrade
    ```
 
-2. Modify `inventory.yml` for your target hosts. Default host number is 3 but you can define more host for more replicas.
+2. Modify `inventory.yml` for your target hosts. Default host number is 3 but you can define more host for more replicas and shards.
 
 3. Run playbook:
 
    ```bash
-   ansible-playbook clickhouse_replication_setup.yml -i inventory.yml -k -K
+   ansible-playbook clickhouse_setup.yml -i inventory.yml -k -K
    ```
 
 
 4. Additional: Uncomment `Uninstall ClickHouse Database` task and comment other tasks to remove ClickHouse.
 
 5. Change to sharding:
-- Modify `shard` in `inventory.yml`
+- Modify `shard` and `replication` in `inventory.yml`
 - Modify `remote-servers.xml.j2`
+- Comment setup tasks in `clickhouse_setup.yml`
+- Notice: After changing the config file, the old tables configs remain the same. It only affects the new tables.
 
 
 
