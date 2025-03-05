@@ -2,14 +2,14 @@
   <remote_servers replace="true">
     <cluster_1S>
     <secret>mysecretphrase</secret>
-    <shard>
         {% for host in groups['all'] %}
-        <replica>
-            <host>{{ host }}</host>
-            <port>9000</port>
-        </replica>
+        <shard>
+            <replica>
+                <host>{{ host }}</host>
+                <port>9000</port>
+            </replica>
+        </shard>
         {% endfor %}
-    </shard>
     </cluster_1S>
   </remote_servers>
 </clickhouse>
