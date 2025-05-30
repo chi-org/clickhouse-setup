@@ -127,22 +127,25 @@
 
 3. Result
 
+   - chk:
+     ![image-20250530170527185](./README.assets/image-20250530170527185.png)
+
    - chi:
      ![image-20250530160727414](./README.assets/image-20250530160727414.png)
 
    - pod:
-     ![image-20250530160531048](./README.assets/image-20250530160531048.png)
+     ![image-20250530170447222](./README.assets/image-20250530170447222.png)
 
    - svc:
-     ![image-20250530160629146](./README.assets/image-20250530160629146.png)
-
+     ![image-20250530170500422](./README.assets/image-20250530170500422.png)
+   
      - **8123**, using for access via HTTP and JDBC
-
+   
      - **9000**, native port, using for `clickhouse-client` command line
-
+   
        ```bash
        k port-forward svc/clickhouse-clickhouse1s2r 9000 -n clickhouse
        ```
-
+   
        
 
