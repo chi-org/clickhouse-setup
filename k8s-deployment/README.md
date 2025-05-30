@@ -15,11 +15,58 @@
    ```
 
    ```yaml
-   # 1shard-2repl.yaml
+   apiVersion: "clickhouse-keeper.altinity.com/v1"
+   kind: "ClickHouseKeeperInstallation"
+   metadata:
+     name: clickhouse-keeper
+     namespace: clickhouse
+   spec:
+     configuration:
+       clusters:
+         - name: "chkeeper"
+           layout:
+             replicasCount: 3
+   
+     defaults:
+       templates:
+         # Templates are specified as default for all clusters
+         podTemplate: default
+         dataVolumeClaimTemplate: default
+   
+     templates:
+       podTemplates:
+         - name: default
+           metadata:
+             labels:
+               app: clickhouse-keeper
+             containers:
+               - name: clickhouse-keeper
+                 imagePullPolicy: IfNotPresent
+                 image: "clickhouse/clickhouse-keeper:latest"
+                 resources:
+                   requests:
+                     memory: "256M"
+                     cpu: "1"
+                   limits:
+                     memory: "4Gi"
+                     cpu: "2"
+             securityContext:
+               fsGroup: 101
+   
+       volumeClaimTemplates:
+         - name: default
+           spec:
+             accessModes:
+               - ReadWriteOnce
+             resources:
+               requests:
+                 storage: 10Gi
+   ---
    apiVersion: v1
    kind: Secret
    metadata:
      name: clickhouse-credentials
+     namespace: clickhouse
    type: Opaque
    stringData:
      # printf 'juniper-password' | sha256sum
@@ -32,6 +79,10 @@
      namespace: "clickhouse"
    spec:
      configuration:
+       zookeeper:
+         nodes:
+           - host: keeper-clickhouse-keeper.clickhouse.svc.cluster.local
+             port: 2181
        clusters:
          - name: "cluster1s2r"
            layout:
